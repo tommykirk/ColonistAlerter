@@ -13,6 +13,15 @@ import yaml
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
+colonist_history_url = 'https://colonist.io/api/profile/{}/history'
+email_body = """
+Hi {},
+You last started a game of colonist at {}. That was {} minutes ago. 
+Here is a helpful email to remind you that you could be doing other things
+that would make you feel better. Like nothing! Going for a walk around the block
+can provide you with the clarity you need to focus on a more rewarding activity.
+"""
+
 
 class ColonistTracker:
     def __init__(self):
@@ -47,42 +56,40 @@ class ColonistTracker:
             Source=self.pii['emails'][0],
         )
 
+    def poll_colonist_games(self, username):
+        url = colonist_history_url.format(username)
+        response = requests.get(url)
 
-def main():
-    tracker = ColonistTracker()
+        if response.status_code == 200:
+            return response
+        else:
+            raise Exception
 
-    # API endpoint
-    url = 'https://colonist.io/api/profile/{}/history'.format('Fara2147')
-
-    # Send a GET request to the API
-    response = requests.get(url)
-
-    # Check if the response was successful
-    if response.status_code == 200:
+    def calculate_and_send_email(self, response, username):
         # Extract the content of the response
         last_game_start_time = datetime.fromtimestamp(int(response.json()[-1]['startTime']) // 1000)
         now = datetime.now()
         last_checked_time = now - timedelta(minutes=60)
-        tracker.logger.info("last game start time: {}".format(last_game_start_time))
-        tracker.logger.info("last checked time: {}".format(last_checked_time))
-
-        body = """
-You last started a game of colonist at {}. That is {} minutes ago. 
-Here is a helpful email to remind you that you could be doing other things
-that would make you feel better. Like nothing! A simple walk,
-or lying on your bed with your thoughts, can make you feel better than colonist.
-""".format(last_game_start_time, (now - last_game_start_time).seconds // 60)
-        print(body)
+        self.logger.info("{} last game start time: {}, now: {}".format(username, last_game_start_time, now))
+        message = email_body.format(username, last_game_start_time, (now - last_game_start_time).seconds // 60)
         # Send an email with the content of the response
         if last_game_start_time > last_checked_time:
             try:
-                tracker.send_email(body)
-                print('email sent')
+                self.send_email(message)
             except Exception as e:
-                tracker.logger.error(e)
-            pass
+                self.logger.error(e)
         else:
-            print('email not sent')
+            self.logger.info('Email not sent')
+
+    def run(self):
+        for username in self.pii['usernames']:
+            response = self.poll_colonist_games(username)
+            self.calculate_and_send_email(response, username)
+
+
+def main():
+    tracker = ColonistTracker()
+    tracker.run()
 
 
 # Press the green button in the gutter to run the script.
