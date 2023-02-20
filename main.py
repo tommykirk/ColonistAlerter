@@ -4,12 +4,13 @@
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
 import json
-import boto3
 import logging
-import requests
+import os
 import sys
 from datetime import datetime, timedelta
 
+import boto3
+import requests
 import yaml
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -117,7 +118,9 @@ if __name__ == '__main__':
 
 def lambda_handler(event, context):
     session = boto3.Session(region_name='us-east-1')
-    main(session)
+    max_recent_game_age_minutes = int(os.environ['COLONIST_RECENT_GAME_AGE'])
+    rolling_period_hours = int(os.environ['COLONIST_ROLLING_PERIOD'])
+    main(session, max_recent_game_age_minutes, rolling_period_hours)
     # TODO implement
     return {
         'statusCode': 200,
