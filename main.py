@@ -13,7 +13,6 @@ import boto3
 import requests
 import yaml
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 colonist_history_url = 'https://colonist.io/api/profile/{}/history'
 email_body = """
@@ -113,10 +112,13 @@ def main(session, max_recent_game_age_minutes, rolling_period_hours):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    logging.getLogger().setLevel(logging.INFO)
+    logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
     main(boto3.Session(profile_name='my-sso-profile', region_name='us-east-1'), 60, 6)
 
 
 def lambda_handler(event, context):
+    logging.getLogger().setLevel(logging.INFO)
     session = boto3.Session(region_name='us-east-1')
     max_recent_game_age_minutes = int(os.environ['COLONIST_RECENT_GAME_AGE'])
     rolling_period_hours = int(os.environ['COLONIST_ROLLING_PERIOD'])
