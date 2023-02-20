@@ -3,6 +3,7 @@
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
+import json
 import boto3
 import logging
 import requests
@@ -24,13 +25,12 @@ can provide you with the clarity you need to focus on a more rewarding activity.
 
 
 class ColonistTracker:
-    def __init__(self):
-        # AWS SES client
-        session = boto3.Session(profile_name='my-sso-profile', region_name='us-east-1')
-        self.ses = session.client('ses')
+    def __init__(self, aws_session):
+        self.ses = aws_session.client('ses')
         self.logger = logging.getLogger()
         self.pii = {'usernames': [], 'emails': []}
-        with open('pii.yml', 'r') as stream:
+        self.
+        with open('colonist-pii.yml', 'r') as stream:
             try:
                 self.pii = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
@@ -76,10 +76,11 @@ class ColonistTracker:
         if last_game_start_time > last_checked_time:
             try:
                 self.send_email(message)
+                self.logger.info('Email sent!')
             except Exception as e:
                 self.logger.error(e)
         else:
-            self.logger.info('Email not sent')
+            self.logger.info('Email not sent.')
 
     def run(self):
         for username in self.pii['usernames']:
@@ -87,12 +88,22 @@ class ColonistTracker:
             self.calculate_and_send_email(response, username)
 
 
-def main():
-    tracker = ColonistTracker()
+def main(session):
+    # AWS SES client
+    tracker = ColonistTracker(session)
     tracker.run()
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    main()
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main(boto3.Session(profile_name='my-sso-profile', region_name='us-east-1'))
+
+
+def lambda_handler(event, context):
+    session = boto3.Session(region_name='us-east-1')
+    main(session)
+    # TODO implement
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Colonist lambda ran successfully!')
+    }
