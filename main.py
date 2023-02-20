@@ -18,6 +18,7 @@ colonist_history_url = 'https://colonist.io/api/profile/{}/history'
 email_body = """
 Hi {},
 You last started a game of colonist at {}. That was {} minutes ago. 
+In the last {} hours, you have played {} total games summing to {} of game time.
 Here is a helpful email to remind you that you could be doing other things
 that would make you feel better. Like nothing! Going for a walk around the block
 can provide you with the clarity you need to focus on a more rewarding activity.
@@ -25,11 +26,12 @@ can provide you with the clarity you need to focus on a more rewarding activity.
 
 
 class ColonistTracker:
-    def __init__(self, aws_session):
+    def __init__(self, aws_session, max_recent_game_age_minutes, rolling_period_hours):
         self.ses = aws_session.client('ses')
         self.logger = logging.getLogger()
         self.pii = {'usernames': [], 'emails': []}
-        self.
+        self.max_recent_game_age_minutes = max_recent_game_age_minutes
+        self.rolling_period_hours = rolling_period_hours
         with open('colonist-pii.yml', 'r') as stream:
             try:
                 self.pii = yaml.safe_load(stream)
@@ -69,18 +71,32 @@ class ColonistTracker:
         # Extract the content of the response
         last_game_start_time = datetime.fromtimestamp(int(response.json()[-1]['startTime']) // 1000)
         now = datetime.now()
-        last_checked_time = now - timedelta(minutes=60)
+        last_checked_time = now - timedelta(minutes=self.max_recent_game_age_minutes)
         self.logger.info("{} last game start time: {}, now: {}".format(username, last_game_start_time, now))
-        message = email_body.format(username, last_game_start_time, (now - last_game_start_time).seconds // 60)
         # Send an email with the content of the response
-        if last_game_start_time > last_checked_time:
-            try:
-                self.send_email(message)
-                self.logger.info('Email sent!')
-            except Exception as e:
-                self.logger.error(e)
-        else:
+        if last_game_start_time < last_checked_time:
             self.logger.info('Email not sent.')
+            return
+        game_history_list = response.json()
+        duration_list = [int(game['duration']) for game in game_history_list if
+                         now - datetime.fromtimestamp(int(game['startTime']) // 1000) <
+                         timedelta(hours=self.rolling_period_hours)]
+        games_played = len(duration_list)
+        minutes_played = sum(duration_list) // 1000 // 60
+        duration_played = "{} minutes".format(minutes_played) \
+            if minutes_played < 60 else "{} hours".format(round(minutes_played / 60, 2))
+        message = email_body.format(username,
+                                    last_game_start_time,
+                                    (now - last_game_start_time).seconds // 60,
+                                    self.rolling_period_hours,
+                                    games_played,
+                                    duration_played)
+
+        try:
+            self.send_email(message)
+            self.logger.info('Email sent!')
+        except Exception as e:
+            self.logger.error(e)
 
     def run(self):
         for username in self.pii['usernames']:
@@ -88,15 +104,15 @@ class ColonistTracker:
             self.calculate_and_send_email(response, username)
 
 
-def main(session):
+def main(session, max_recent_game_age_minutes, rolling_period_hours):
     # AWS SES client
-    tracker = ColonistTracker(session)
+    tracker = ColonistTracker(session, max_recent_game_age_minutes, rolling_period_hours)
     tracker.run()
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    main(boto3.Session(profile_name='my-sso-profile', region_name='us-east-1'))
+    main(boto3.Session(profile_name='my-sso-profile', region_name='us-east-1'), 60, 6)
 
 
 def lambda_handler(event, context):
