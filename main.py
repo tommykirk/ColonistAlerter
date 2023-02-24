@@ -14,18 +14,18 @@ import requests
 import yaml
 
 
-colonist_history_url = 'https://colonist.io/api/profile/{}/history'
-email_body = """
-Hi {},
-You last started a game of colonist at {}. That was {} minutes ago. 
-In the last {} hours, you have played {} total games summing to {} of game time.
-Here is a helpful email to remind you that you could be doing other things
-that would make you feel better. Like nothing! Going for a walk around the block
-can provide you with the clarity you need to focus on a more rewarding activity.
-"""
-
-
 class ColonistTracker:
+    colonist_history_url = 'https://colonist.io/api/profile/{}/history'
+    email_body = """
+    Hi {},
+    You last started a game of colonist {} minutes ago at {}. 
+    In the last {} hours, you have played {} total games summing to {} of game time.
+    
+    Here is a helpful email to remind you that you could be doing other things
+    that would make you feel better. Like nothing! Going for a walk around the block
+    can provide you with the clarity you need to focus on a more rewarding activity.
+    """
+
     def __init__(self, aws_session, max_recent_game_age_minutes, rolling_period_hours):
         self.ses = aws_session.client('ses')
         self.logger = logging.getLogger()
@@ -38,7 +38,7 @@ class ColonistTracker:
             except yaml.YAMLError as exc:
                 self.logger.error(exc)
 
-    def send_email(self, content):
+    def send_email(self, content, to_user):
         self.ses.send_email(
             Destination={
                 'ToAddresses': self.pii['emails'],
@@ -52,14 +52,14 @@ class ColonistTracker:
                 },
                 'Subject': {
                     'Charset': 'UTF-8',
-                    'Data': 'Helpful Reminder Regarding Colonist',
+                    'Data': 'Helpful Reminder For {} Regarding Colonist'.format(to_user),
                 },
             },
             Source=self.pii['emails'][0],
         )
 
     def poll_colonist_games(self, username):
-        url = colonist_history_url.format(username)
+        url = ColonistTracker.colonist_history_url.format(username)
         response = requests.get(url)
 
         if response.status_code == 200:
@@ -67,7 +67,7 @@ class ColonistTracker:
         else:
             raise Exception
 
-    def calculate_and_send_email(self, response, username):
+    def calculate_and_send_email(self, response, username, name):
         # Extract the content of the response
         last_game_start_time = datetime.fromtimestamp(int(response.json()[-1]['startTime']) // 1000)
         now = datetime.now()
@@ -85,23 +85,25 @@ class ColonistTracker:
         minutes_played = sum(duration_list) // 1000 // 60
         duration_played = "{} minutes".format(minutes_played) \
             if minutes_played < 60 else "{} hours".format(round(minutes_played / 60, 2))
-        message = email_body.format(username,
-                                    last_game_start_time,
-                                    (now - last_game_start_time).seconds // 60,
-                                    self.rolling_period_hours,
-                                    games_played,
-                                    duration_played)
+        message = ColonistTracker.email_body.format(username,
+                                                    (now - last_game_start_time).seconds // 60,
+                                                    last_game_start_time,
+                                                    self.rolling_period_hours,
+                                                    games_played,
+                                                    duration_played)
 
         try:
-            self.send_email(message)
+            self.send_email(message, name)
             self.logger.info('Email sent!')
         except Exception as e:
             self.logger.error(e)
 
     def run(self):
-        for username in self.pii['usernames']:
-            response = self.poll_colonist_games(username)
-            self.calculate_and_send_email(response, username)
+        for username_to_name_map in self.pii['usernames']:
+            print(username_to_name_map)
+            for username, name in username_to_name_map.items():
+                response = self.poll_colonist_games(username)
+                self.calculate_and_send_email(response, username, name)
 
 
 def main(session, max_recent_game_age_minutes, rolling_period_hours):
