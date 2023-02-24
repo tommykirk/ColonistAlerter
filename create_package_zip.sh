@@ -1,4 +1,6 @@
 mkdir package
 pip install --target package/ -r requirements.txt
-zip -r colonist-deployment-package.zip package/*
+cd package
+zip -r ../colonist-deployment-package.zip .
+cd ..
 zip colonist-deployment-package.zip colonist-pii.yml main.py
