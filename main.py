@@ -29,7 +29,7 @@ class ColonistTracker:
     def __init__(self, aws_session, max_recent_game_age_minutes, rolling_period_hours):
         self.ses = aws_session.client('ses')
         self.logger = logging.getLogger()
-        self.pii = {'usernames': [], 'emails': []}
+        self.pii = {'names': [], 'emails': []}
         self.max_recent_game_age_minutes = max_recent_game_age_minutes
         self.rolling_period_hours = rolling_period_hours
         with open('colonist-pii.yml', 'r') as stream:
@@ -99,11 +99,11 @@ class ColonistTracker:
             self.logger.error(e)
 
     def run(self):
-        for username_to_name_map in self.pii['usernames']:
-            print(username_to_name_map)
-            for username, name in username_to_name_map.items():
-                response = self.poll_colonist_games(username)
-                self.calculate_and_send_email(response, username, name)
+        for name_to_usernames_map in self.pii['usernames']:
+            for name, usernames in name_to_usernames_map.items():
+                for username in usernames:
+                    response = self.poll_colonist_games(username)
+                    self.calculate_and_send_email(response, username, name)
 
 
 def main(session, max_recent_game_age_minutes, rolling_period_hours):
@@ -116,7 +116,13 @@ def main(session, max_recent_game_age_minutes, rolling_period_hours):
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
-    main(boto3.Session(profile_name='my-sso-profile', region_name='us-east-1'), 60, 6)
+    max_recent_game_age_minutes = 60
+    rolling_lookback_period_hours = 8
+    main(
+        boto3.Session(profile_name='my-sso-profile', region_name='us-east-1'),
+        max_recent_game_age_minutes,
+        rolling_lookback_period_hours
+    )
 
 
 def lambda_handler(event, context):
