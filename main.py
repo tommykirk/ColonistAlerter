@@ -70,11 +70,15 @@ class ColonistTracker:
     def calculate_and_send_email(self, response, username, name):
         # Extract the content of the response
         last_game_start_time = datetime.fromtimestamp(int(response.json()[-1]['startTime']) // 1000)
+        last_game_end_time = last_game_start_time + timedelta(milliseconds=int(response.json()[-1]['duration']))
         now = datetime.now()
         last_checked_time = now - timedelta(minutes=self.max_recent_game_age_minutes)
-        self.logger.info("{} last game start time: {}, now: {}".format(username, last_game_start_time, now))
+        self.logger.info("{} last game start time: {} \n last game end time: {} \n now: {}".format(username,
+                                                                                                   last_game_start_time,
+                                                                                                   last_game_end_time,
+                                                                                                   now))
         # Send an email with the content of the response
-        if last_game_start_time < last_checked_time:
+        if last_game_end_time < last_checked_time:
             self.logger.info('Email not sent.')
             return
         game_history_list = response.json()
