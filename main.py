@@ -26,7 +26,8 @@ class ColonistTracker:
     can provide you with the clarity you need to focus on a more rewarding activity.
     """
 
-    def __init__(self, aws_session, max_recent_game_age_minutes, rolling_period_hours):
+    def __init__(self, aws_session, max_recent_game_age_minutes, rolling_period_hours, DRY_RUN):
+        self.DRY_RUN = DRY_RUN
         self.ses = aws_session.client('ses')
         self.logger = logging.getLogger()
         self.pii = {'names': [], 'emails': []}
@@ -38,13 +39,17 @@ class ColonistTracker:
             except yaml.YAMLError as exc:
                 self.logger.error(exc)
 
-    def send_email(self, content, to_user):
-        if DRY_RUN:
+    def get_email_recipients(self, name_of_recipient):
+        return self.pii['recipients'][name_of_recipient]
+
+    def send_email(self, content, name_of_recipient):
+        if self.DRY_RUN:
+            print("DRY_RUN is True, not sending email to: {}".format(self.get_email_recipients(name_of_recipient)))
             print(content)
         else:
             self.ses.send_email(
                 Destination={
-                    'ToAddresses': self.pii['emails'],
+                    'ToAddresses': self.get_email_recipients(name_of_recipient),
                 },
                 Message={
                     'Body': {
@@ -55,7 +60,7 @@ class ColonistTracker:
                     },
                     'Subject': {
                         'Charset': 'UTF-8',
-                        'Data': 'Helpful Reminder For {} Regarding Colonist'.format(to_user),
+                        'Data': 'Helpful Reminder For {} Regarding Colonist'.format(name_of_recipient),
                     },
                 },
                 Source=self.pii['emails'][0],
@@ -93,7 +98,7 @@ class ColonistTracker:
         minutes_played = sum(duration_list) // 1000 // 60
         duration_played = "{} minutes".format(minutes_played) \
             if minutes_played < 60 else "{} hours".format(round(minutes_played / 60, 2))
-        message = ColonistTracker.email_body.format(username,
+        message = ColonistTracker.email_body.format(username + " ({})".format(name),
                                                     (now - last_game_start_time).seconds // 60,
                                                     last_game_start_time,
                                                     self.rolling_period_hours,
@@ -102,10 +107,10 @@ class ColonistTracker:
 
         try:
             self.send_email(message, name)
-            if not DRY_RUN:
+            if not self.DRY_RUN:
                 self.logger.info('Email sent!')
         except Exception as e:
-            self.logger.error(e)
+            self.logger.error(f"Error type: {type(e).__name__}, Message: {e}")
 
     def run(self):
         for name_to_usernames_map in self.pii['usernames']:
@@ -115,15 +120,14 @@ class ColonistTracker:
                     self.calculate_and_send_email(response, username, name)
 
 
-def main(session, max_recent_game_age_minutes, rolling_period_hours):
+def main(session, max_recent_game_age_minutes, rolling_period_hours, DRY_RUN):
     # AWS SES client
-    tracker = ColonistTracker(session, max_recent_game_age_minutes, rolling_period_hours)
+    tracker = ColonistTracker(session, max_recent_game_age_minutes, rolling_period_hours, DRY_RUN)
     tracker.run()
-
-DRY_RUN = True
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    DRY_RUN = True
     logging.getLogger().setLevel(logging.INFO)
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
     max_recent_game_age_minutes = 60
@@ -131,16 +135,18 @@ if __name__ == '__main__':
     main(
         boto3.Session(region_name='us-east-1'),
         max_recent_game_age_minutes,
-        rolling_lookback_period_hours
+        rolling_lookback_period_hours,
+        True
     )
 
 
 def lambda_handler(event, context):
+    DRY_RUN = False
     logging.getLogger().setLevel(logging.INFO)
     session = boto3.Session(region_name='us-east-1')
     max_recent_game_age_minutes = int(os.environ['COLONIST_RECENT_GAME_AGE'])
     rolling_period_hours = int(os.environ['COLONIST_ROLLING_PERIOD'])
-    main(session, max_recent_game_age_minutes, rolling_period_hours)
+    main(session, max_recent_game_age_minutes, rolling_period_hours, DRY_RUN)
     # TODO implement
     return {
         'statusCode': 200,
