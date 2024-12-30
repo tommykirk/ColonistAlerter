@@ -27,21 +27,25 @@ class ColonistDownloader:
         url = ColonistDownloader.colonist_history_url.format(self.username)
         response = requests.get(url)
         response.raise_for_status()
+        print(response.status_code)
         games = response.json()['gameDatas']
         for game in games:
             game_date = format_date_from_millis(game["startTime"])
             self.db.set([self.username, game_date, game["id"]], game)
 
     def read_game(self):
-        games = self.db.get(self.username, "2024-12-29")
-        print(len(games))
-        for i, game in enumerate(games):
-            print(i, self.transform_game(game))
+        today = datetime.today().strftime("%Y-%m-%d")
+        games = self.db.get(self.username, today)
+        games_stats = [self.transform_game(game) for game in games]
+        for i, game in enumerate(games_stats):
+            print(f"Game {i+1} result: {'won' if game[0] else 'lost'} in {game[1]} minutes")
+        print(f"Spent {sum(time for result, time in games_stats)} minutes playing catan today.")
 
     def transform_game(self, game):
         game_json = json.loads(game[0])
-        won = game_json['players'][0]['username'] == self.username
-        duration = game_json['duration']
+        won = next(player['rank']==1 for player in game_json['players'] if player['username'] == self.username)
+        print(won)
+        duration = int(game_json['duration']) // 1000 / 60
         return won, duration
 
 
