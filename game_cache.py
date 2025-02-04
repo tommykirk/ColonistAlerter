@@ -13,13 +13,15 @@ class GameCache:
         self._create_table(primary_key_fields)
 
     def _create_table(self, primary_key_fields):
-        self.cursor.execute(f'''
+        create_table = f'''
             CREATE TABLE IF NOT EXISTS {self.table_name} (
                 {"".join(f"{key} TEXT, " for key in primary_key_fields)}
                 value TEXT,
                 PRIMARY KEY ({",".join(primary_key_fields)})
             )
-        ''')
+        '''
+        print(create_table)
+        self.cursor.execute(create_table)
         self.conn.commit()
 
     def set(self, primary_key_field_values, value):
@@ -30,6 +32,7 @@ class GameCache:
             VALUES ({', '.join('?' for _ in row_data)})
             ON CONFLICT({",".join(self.primary_key_field_names)}) DO UPDATE SET value=excluded.value
         '''
+        # print(write_query)
         self.cursor.execute(write_query , [value for value in row_data])
         self.conn.commit()
 
@@ -42,10 +45,19 @@ class GameCache:
         values = self.cursor.fetchall()
         return values
 
-    def get_rows(self, username):
+    def get_row_by_id(self, game_id=0):
         self.cursor.execute(f'''
-            SELECT * FROM {self.table_name} WHERE username=?
-        ''', [username])
+            SELECT * FROM {self.table_name} WHERE game_id=? 
+        ''', [game_id])
+        values = self.cursor.fetchall()
+        return values
+
+    def get_rows(self, username, day=None):
+        day_filter = "AND day=?" if day is not None else ""
+        params = [username, day]
+        self.cursor.execute(f'''
+            SELECT * FROM {self.table_name} WHERE username=? {day_filter}
+        ''', [param for param in params if param is not None])
         rows = self.cursor.fetchall()
         return rows
 
