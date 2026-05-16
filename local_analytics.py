@@ -12,7 +12,7 @@ from game_cache import GameCache
 class ColonistDownloader:
     colonist_history_url = 'https://colonist.io/api/profile/{}/history'
 
-    def __init__(self, table_name="kv_store"):
+    def __init__(self, person_name="Tommy", table_name="kv_store"):
         self.logger = logging.getLogger()
         self.pii = {'names': [], 'emails': []}
         with open('colonist-pii.yml', 'r') as stream:
@@ -20,7 +20,10 @@ class ColonistDownloader:
                 self.pii = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
                 self.logger.error(exc)
-        self.username = self.pii['usernames'][1]['Tommy'][0]
+        # print(self.pii['usernames'])
+        username = next((name_to_username_map for name_to_username_map in self.pii['usernames'] if person_name in name_to_username_map.keys()))
+        self.username = username[person_name][0]
+        # self.username = self.pii['usernames'][2]['Charlie'][0]
         self.primary_key_fields=["username", "day", "game_id", "rank", "duration", "had_resignation", "elo_type"]
         self.db = GameCache(db_name="colonist_history.db", primary_key_fields=self.primary_key_fields, table_name=table_name)
 
@@ -176,17 +179,17 @@ def format_date_from_millis(milliseconds):
 
 def main():
     # AWS SES client
-    # analyze_roll_file()
-    tracker = ColonistDownloader()
+    analyze_roll_file()
+    # tracker = ColonistDownloader(person_name="Charlie")
     # tracker.adhoc()
-    tracker.download_games()
+    # tracker.download_games()
     # tracker.read_game(datetime.today().replace(day=29, month=12, year=2024).strftime("%Y-%m-%d"))
-    today = datetime.today()
+    # today = datetime.today()
     # tracker.read_game(today.strftime("%Y-%m-%d"))
     # for i in range(10):
     #     day = today - timedelta(days=i)
     #     tracker.read_game(day.strftime("%Y-%m-%d"))
-    tracker.read_game((datetime.today() - timedelta(days=0)).strftime("%Y-%m-%d"))
+    # tracker.read_game((today - timedelta(days=0)).strftime("%Y-%m-%d"))
     # tracker.read_game(None)
     # tracker.update_rows_in_new_table("had_resignation", tracker.extract_had_resignation)
 

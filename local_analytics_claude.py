@@ -92,9 +92,12 @@ def build_chart(events):
     fig = plt.figure(figsize=(12, 6))
     fig.patch.set_facecolor('#1E1E2E')
 
-    gs = GridSpec(2, 1, height_ratios=[10, 1], hspace=0.4)
-    ax     = fig.add_subplot(gs[0])
-    ax_sl  = fig.add_subplot(gs[1])
+    gs = GridSpec(3, 3, height_ratios=[10, 1, 1], hspace=0.4)
+    ax      = fig.add_subplot(gs[0, :])
+    ax_sl   = fig.add_subplot(gs[1, :])
+    ax_prev = fig.add_subplot(gs[2, 0])
+    ax_end  = fig.add_subplot(gs[2, 1])  # spacer / end button
+    ax_next = fig.add_subplot(gs[2, 2])
 
     ax.set_facecolor('#2A2A3E')
     for spine in ax.spines.values():

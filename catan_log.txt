@@ -1,0 +1,325 @@
+[0] Happy settling! Learn how to play in the rulebook. 
+List of commands: /help
+[1] ---
+[2] JimboJumbo placed a Settlement settlement
+[3] JimboJumbo placed a Road road
+[4] ---
+[5] redacted_user placed a Settlement settlement
+[6] redacted_user placed a Road road
+[7] ---
+[8] redacted_user placed a Settlement settlement
+[9] redacted_user received starting resources wheat sheep brick
+[10] redacted_user placed a Road road
+[11] ---
+[12] JimboJumbo placed a Settlement settlement
+[13] JimboJumbo received starting resources wood ore sheep
+[14] JimboJumbo placed a Road road
+[15] ---
+[16] JimboJumbo rolled dice_4 dice_6
+[17] JimboJumbo got sheep
+[18] ---
+[19] redacted_user rolled dice_5 dice_3
+[20] JimboJumbo got wheat
+[21] ---
+[22] JimboJumbo rolled dice_2 dice_1
+[23] redacted_user got brick
+[24] JimboJumbo bought Development Card
+[25] ---
+[26] redacted_user rolled dice_5 dice_4
+[27] redacted_user got wood wheat
+[28] redacted_user built a Road road
+[29] ---
+[30] JimboJumbo rolled dice_6 dice_4
+[31] JimboJumbo got sheep
+[32] ---
+[33] redacted_user rolled dice_1 dice_4
+[34] JimboJumbo got brick ore
+[35] redacted_user got ore
+[36] ---
+[37] JimboJumbo rolled dice_4 dice_5
+[38] redacted_user got wood wheat
+[39] ---
+[40] redacted_user rolled dice_6 dice_2
+[41] JimboJumbo got wheat
+[42] redacted_user built a Settlement settlement (+1 VP)
+[43] ---
+[44] JimboJumbo rolled dice_4 dice_1
+[45] JimboJumbo got brick ore
+[46] redacted_user got ore
+[47] ---
+[48] redacted_user rolled dice_6 dice_5
+[49] JimboJumbo got wood
+[50] redacted_user got wood
+[51] ---
+[52] JimboJumbo rolled dice_2 dice_2
+[53] JimboJumbo got sheep
+[54] redacted_user got sheep
+[55] JimboJumbo built a Road road
+[56] JimboJumbo built a Road road
+[57] ---
+[58] redacted_user rolled dice_4 dice_3
+[59] robber Friendly Robber is active, tiles available to block are limited
+[60] redacted_user moved Robber robber to  prob_8 ore tile
+[61] No player to steal from
+[62] ---
+[63] JimboJumbo rolled dice_1 dice_3
+[64] JimboJumbo got sheep
+[65] redacted_user got sheep
+[66] JimboJumbo bought Development Card
+[67] ---
+[68] redacted_user rolled dice_1 dice_1
+[69] ---
+[70] JimboJumbo rolled dice_5 dice_2
+[71] robber Friendly Robber is active, tiles available to block are limited
+[72] JimboJumbo moved Robber robber to  prob_6 ore tile
+[73] JimboJumbo stole wood from you
+[74] ---
+[75] redacted_user rolled dice_2 dice_3
+[76] JimboJumbo got brick ore
+[77] redacted_user got ore
+[78] redacted_user built a City city (+1 VP)
+[79] ---
+[80] JimboJumbo rolled dice_6 dice_6
+[81] ---
+[82] redacted_user rolled dice_5 dice_6
+[83] JimboJumbo got wood
+[84] redacted_user got wood
+[85] ---
+[86] JimboJumbo rolled dice_3 dice_2
+[87] JimboJumbo got brick ore
+[88] redacted_user got ore
+[89] JimboJumbo built a Road road
+[90] JimboJumbo built a Road road
+[91] JimboJumbo received Longest Road longest road (+2 VPs)
+[92] ---
+[93] redacted_user rolled dice_2 dice_6
+[94] JimboJumbo got wheat
+[95] ---
+[96] JimboJumbo rolled dice_1 dice_2
+[97] redacted_user got brick brick wheat
+[98] ---
+[99] redacted_user rolled dice_3 dice_4
+[100] redacted_user moved Robber robber to  prob_5 brick tile
+[101] You stole sheep from JimboJumbo
+[102] redacted_user built a Road road
+[103] ---
+[104] JimboJumbo used
+[105] JimboJumbo moved Robber robber to  prob_6 ore tile
+[106] JimboJumbo stole brick from you
+[107] JimboJumbo rolled dice_2 dice_4
+[108] prob_6 ore tile is blocked by the Robber. No resources produced
+[109] ---
+[110] redacted_user rolled dice_6 dice_3
+[111] redacted_user got wood wheat wheat
+[112] redacted_user bought Development Card
+[113] ---
+[114] JimboJumbo rolled dice_6 dice_3
+[115] redacted_user got wood wheat wheat
+[116] ---
+[117] redacted_user rolled dice_2 dice_1
+[118] redacted_user got brick brick wheat
+[119] redacted_user built a Road road
+[120] ---
+[121] JimboJumbo rolled dice_6 dice_1
+[122] JimboJumbo moved Robber robber to  prob_9 lumber tile
+[123] JimboJumbo stole wheat from you
+[124] JimboJumbo built a City city (+1 VP)
+[125] ---
+[126] redacted_user rolled dice_6 dice_4
+[127] JimboJumbo got sheep
+[128] redacted_user built a Settlement settlement (+1 VP)
+[129] ---
+[130] JimboJumbo rolled dice_4 dice_6
+[131] JimboJumbo got sheep
+[132] ---
+[133] redacted_user rolled dice_3 dice_5
+[134] JimboJumbo got wheat
+[135] ---
+[136] JimboJumbo rolled dice_3 dice_2
+[137] JimboJumbo got brick ore ore
+[138] redacted_user got ore
+[139] JimboJumbo bought Development Card
+[140] ---
+[141] redacted_user rolled dice_5 dice_6
+[142] JimboJumbo got wood wood
+[143] redacted_user got brick wood
+[144] redacted_user built a Road road
+[145] ---
+[146] JimboJumbo rolled dice_1 dice_4
+[147] JimboJumbo got brick ore ore
+[148] redacted_user got ore
+[149] JimboJumbo built a Road road
+[150] JimboJumbo used
+[151] JimboJumbo took from bank wheat wood
+[152] JimboJumbo built a Settlement settlement (+1 VP)
+[153] ---
+[154] redacted_user rolled dice_5 dice_2
+[155] redacted_user moved Robber robber to  prob_5 brick tile
+[156] You stole sheep from JimboJumbo
+[157] redacted_user bought Development Card
+[158] ---
+[159] JimboJumbo rolled dice_4 dice_5
+[160] redacted_user got wood wheat wheat
+[161] ---
+[162] redacted_user rolled dice_4 dice_4
+[163] JimboJumbo got ore wheat
+[164] ---
+[165] JimboJumbo rolled dice_2 dice_5
+[166] JimboJumbo moved Robber robber to  prob_6 ore tile
+[167] JimboJumbo stole wheat from you
+[168] JimboJumbo built a Settlement settlement (+1 VP)
+[169] ---
+[170] redacted_user rolled dice_1 dice_1
+[171] ---
+[172] JimboJumbo rolled dice_1 dice_2
+[173] redacted_user got brick brick wheat wheat
+[174] ---
+[175] redacted_user rolled dice_1 dice_6
+[176] redacted_user discarded wheat wheat wheat wheat ore
+[177] redacted_user moved Robber robber to  prob_8 ore tile
+[178] You stole ore from JimboJumbo
+[179] redacted_user used
+[180] redacted_user placed a Road road
+[181] redacted_user placed a Road road
+[182] redacted_user built a Settlement settlement (+1 VP)
+[183] ---
+[184] JimboJumbo rolled dice_5 dice_5
+[185] JimboJumbo got sheep sheep
+[186] JimboJumbo bought Development Card
+[187] ---
+[188] redacted_user rolled dice_3 dice_1
+[189] JimboJumbo got sheep sheep sheep
+[190] redacted_user got sheep sheep sheep sheep
+[191] ---
+[192] JimboJumbo rolled dice_2 dice_6
+[193] prob_8 ore tile is blocked by the Robber. No resources produced
+[194] JimboJumbo got wheat
+[195] redacted_user got wheat
+[196] JimboJumbo bought Development Card
+[197] ---
+[198] redacted_user rolled dice_5 dice_3
+[199] prob_8 ore tile is blocked by the Robber. No resources produced
+[200] JimboJumbo got wheat
+[201] redacted_user got wheat
+[202] redacted_user bought Development Card
+[203] ---
+[204] JimboJumbo rolled dice_5 dice_1
+[205] redacted_user got ore ore
+[206] ---
+[207] redacted_user rolled dice_2 dice_3
+[208] JimboJumbo got brick ore ore
+[209] redacted_user got ore
+[210] ---
+[211] JimboJumbo rolled dice_2 dice_2
+[212] JimboJumbo got sheep sheep sheep
+[213] redacted_user got sheep sheep sheep sheep
+[214] JimboJumbo gave bank sheep sheep sheep sheep and took wheat
+[215] JimboJumbo built a City city (+1 VP)
+[216] JimboJumbo used
+[217] JimboJumbo placed a Road road
+[218] JimboJumbo placed a Road road
+[219] ---
+[220] redacted_user rolled dice_1 dice_3
+[221] JimboJumbo got sheep sheep sheep
+[222] redacted_user got sheep sheep sheep sheep
+[223] redacted_user gave bank sheep sheep sheep sheep and took wheat
+[224] redacted_user built a City city (+1 VP)
+[225] ---
+[226] JimboJumbo rolled dice_3 dice_1
+[227] JimboJumbo got sheep sheep sheep
+[228] redacted_user got sheep sheep sheep sheep
+[229] JimboJumbo gave bank sheep sheep sheep sheep and took wood
+[230] ---
+[231] redacted_user rolled dice_5 dice_6
+[232] JimboJumbo got wood wood wood
+[233] redacted_user got brick wood
+[234] redacted_user built a Road road
+[235] redacted_user gave bank sheep sheep sheep sheep and took brick
+[236] ---
+[237] JimboJumbo rolled dice_3 dice_5
+[238] prob_8 ore tile is blocked by the Robber. No resources produced
+[239] JimboJumbo got wheat wheat
+[240] redacted_user got wheat
+[241] JimboJumbo built a Settlement settlement (+1 VP)
+[242] JimboJumbo used
+[243] JimboJumbo moved Robber robber to  prob_6 ore tile
+[244] JimboJumbo stole sheep from you
+[245] ---
+[246] redacted_user rolled dice_2 dice_4
+[247] prob_6 ore tile is blocked by the Robber. No resources produced
+[248] redacted_user used
+[249] redacted_user moved Robber robber to  prob_8 ore tile
+[250] You stole sheep from JimboJumbo
+[251] redacted_user gave bank sheep sheep sheep sheep and took ore
+[252] redacted_user bought Development Card
+[253] ---
+[254] JimboJumbo rolled dice_1 dice_3
+[255] JimboJumbo got sheep sheep sheep
+[256] redacted_user got sheep sheep sheep sheep
+[257] JimboJumbo gave bank sheep sheep sheep sheep and took ore
+[258] JimboJumbo bought Development Card
+[259] ---
+[260] redacted_user rolled dice_4 dice_2
+[261] redacted_user got ore ore ore
+[262] redacted_user gave bank sheep sheep sheep sheep and took wheat
+[263] redacted_user bought Development Card
+[264] ---
+[265] JimboJumbo used
+[266] JimboJumbo received Largest Army largest army (+2 VPs)
+[267] JimboJumbo moved Robber robber to  prob_6 ore tile
+[268] JimboJumbo stole brick from you
+[269] JimboJumbo rolled dice_3 dice_2
+[270] JimboJumbo got brick brick ore ore
+[271] redacted_user got ore ore
+[272] JimboJumbo built a Road road
+[273] JimboJumbo built a Road road
+[274] ---
+[275] redacted_user used
+[276] redacted_user moved Robber robber to  prob_8 ore tile
+[277] You stole wood from JimboJumbo
+[278] redacted_user rolled dice_6 dice_5
+[279] JimboJumbo got wood wood wood
+[280] redacted_user got brick wood
+[281] redacted_user gave bank ore ore ore ore and took wheat
+[282] redacted_user built a Road road
+[283] redacted_user built a Settlement settlement (+1 VP)
+[284] ---
+[285] JimboJumbo rolled dice_5 dice_2
+[286] JimboJumbo moved Robber robber to  prob_6 ore tile
+[287] Player has no cards
+[288] ---
+[289] redacted_user used
+[290] redacted_user moved Robber robber to  prob_8 ore tile
+[291] You stole brick from JimboJumbo
+[292] redacted_user rolled dice_4 dice_5
+[293] JimboJumbo got wheat
+[294] redacted_user got wood wood wheat wheat
+[295] redacted_user built a Road road
+[296] ---
+[297] JimboJumbo rolled dice_6 dice_4
+[298] JimboJumbo got sheep sheep sheep
+[299] redacted_user got wheat
+[300] JimboJumbo bought Development Card
+[301] ---
+[302] redacted_user rolled dice_6 dice_2
+[303] prob_8 ore tile is blocked by the Robber. No resources produced
+[304] JimboJumbo got wheat wheat
+[305] redacted_user got wheat
+[306] ---
+[307] JimboJumbo rolled dice_5 dice_3
+[308] prob_8 ore tile is blocked by the Robber. No resources produced
+[309] JimboJumbo got wheat wheat
+[310] redacted_user got wheat
+[311] JimboJumbo bought Development Card
+[312] ---
+[313] redacted_user rolled dice_1 dice_1
+[314] ---
+[315] JimboJumbo rolled dice_4 dice_1
+[316] JimboJumbo got brick brick ore ore
+[317] redacted_user got ore ore ore
+[318] JimboJumbo built a Settlement settlement (+1 VP)
+[319] JimboJumbo bought Development Card
+[320] ---
+[321] trophy JimboJumbo won the game! trophy
+[322] ---
+[323] JimboJumbo has left the game
